@@ -83,7 +83,7 @@ const MoviesDetails = () => {
             <h2>
               {title}({releaseDate})
             </h2>
-            <p>User score:{userScore}%</p>
+            <p>User score: {userScore}%</p>
             <h3>Overview</h3>
             <p>{overview}</p>
             <h3>Genres</h3>
@@ -100,10 +100,10 @@ const MoviesDetails = () => {
           <h3>Additional information</h3>
           <List>
             <li>
-              <LinkInfo to="cast">Cast</LinkInfo>
+              <LinkInfo to={`${location.pathname}/cast`}>Cast</LinkInfo>
             </li>
             <li>
-              <LinkInfo to="reviews">Reviews</LinkInfo>
+              <LinkInfo to={`${location.pathname}/reviews`}>Reviews</LinkInfo>
             </li>
           </List>
         </LineDiv>
