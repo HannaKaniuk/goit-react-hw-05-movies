@@ -9,7 +9,7 @@ import { Loader } from 'components/Loader/Loader';
 function Movies() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [noName, setNoName] = useState(false);
+  // const [noName, setNoName] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get('searchQuery');
 
@@ -17,9 +17,9 @@ function Movies() {
     const fetchMoviesSearch = () => {
       setLoading(true);
       fetchSearchMovies(searchQuery)
-        .then(queryMovieName => {
-          setMovies(queryMovieName);
-          setNoName(queryMovieName.length === 0);
+        .then(movies => {
+          setMovies(movies);
+          // setNoName(queryMovieName.length === 0);
         })
         .catch(error => {
           console.log(error);
@@ -32,7 +32,7 @@ function Movies() {
       fetchMoviesSearch();
     } else {
       setMovies([]);
-      setNoName(false);
+      // setNoName(false);
       setLoading(false);
     }
   }, [searchQuery]);
@@ -62,12 +62,13 @@ function Movies() {
       </SearchDiv>
 
       {loading && <Loader />}
-      {noName && searchQuery && (
+      {!movies.length ? (
         <TextInfo>
           There is no movies with this request. Please, try again
         </TextInfo>
+      ) : (
+        <TrendingList movies={movies} />
       )}
-      <TrendingList movies={movies} />
     </HomeDiv>
   );
 }

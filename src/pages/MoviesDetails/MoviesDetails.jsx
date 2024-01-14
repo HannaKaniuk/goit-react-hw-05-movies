@@ -1,7 +1,7 @@
 import { fetchMovieInform } from 'helppers/fetch';
 import React, { Suspense, useEffect, useState } from 'react';
 import { FaArrowRotateLeft } from 'react-icons/fa6';
-import { Outlet, useLocation, useParams } from 'react-router-dom';
+import { Outlet, useLocation, useParams, useNavigate } from 'react-router-dom';
 import {
   MovieContainer,
   List,
@@ -22,26 +22,27 @@ const MoviesDetails = () => {
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const { movieId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchMovieDetails = () => {
+    const fetchMovieDetails = async () => {
       setLoading(true);
-      fetchMovieInform(movieId)
-        .then(movieDetails => {
-          setMovieInfo(movieDetails);
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      try {
+        const movieDetails = await fetchMovieInform(movieId);
+        setMovieInfo(movieDetails);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
     };
     fetchMovieDetails();
   }, [movieId]);
+
   if (!movieInfo) {
     return null;
   }
+
   const {
     title,
     release_date,
@@ -50,7 +51,8 @@ const MoviesDetails = () => {
     genres,
     poster_path,
     original_title,
-  } = movieInfo || {};
+  } = movieInfo;
+
   const releaseDate = release_date.slice(0, 4);
   const userScore = Math.round(vote_average * 10);
   const defaultMovieImg =
@@ -59,7 +61,7 @@ const MoviesDetails = () => {
   return (
     <div>
       <BackDiv>
-        <LinkBtn to={location.state?.from ?? '/'}>
+        <LinkBtn onClick={() => navigate(-1)}>
           Go back
           <FaArrowRotateLeft />
         </LinkBtn>
