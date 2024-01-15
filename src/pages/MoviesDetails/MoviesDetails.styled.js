@@ -12,29 +12,10 @@ export const MovieContainer = styled.div`
   }
 `;
 
-export const ListGenres = styled.ul`
-  list-style-type: none;
-  display: flex;
-  gap: 20px;
-
-  @media screen and (min-width: 768px) {
-    justify-content: flex-start;
-  }
-`;
-
-export const List = styled.ul`
-  list-style-type: none;
-  padding-left: 0;
-
-  @media screen and (min-width: 768px) {
-    justify-content: flex-start;
-  }
-`;
-
 export const ImgWrp = styled.div`
   display: flex;
   justify-content: center;
-  // background: #f2f2f2;
+  background: #f2f2f2;
 `;
 
 export const InfoWrp = styled.div`
@@ -47,36 +28,20 @@ export const InfoWrp = styled.div`
   }
 `;
 
-export const LinkInfo = styled(Link)`
-  display: block;
-  background-color: #ddd;
-  width: 100px;
-  text-align: center;
-  border: 1px solid #aaa;
-  border-radius: 5px;
-  text-decoration: none;
-  color: #333;
-  padding: 5px 35px 5px 35px;
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 15px;
-  &:hover {
-    background-color: #ccc;
+export const ListGenres = styled.ul`
+  list-style-type: none;
+  display: flex;
+  gap: 20px;
+
+  @media screen and (min-width: 768px) {
+    justify-content: flex-start;
   }
 `;
 
-export const AdditionalWrp = styled.div`
+export const BackDiv = styled.div`
   background: #f2f2f2;
-  padding: 10px 15px;
-  h3 {
-    margin-bottom: 15px;
-    color: #333;
-  }
-`;
-
-export const LineDiv = styled.div`
-  border-top: 2px solid #ddd;
-  border-bottom: 2px solid #ddd;
+  padding-top: 15px;
+  padding-left: 15px;
 `;
 
 export const Img = styled.img`
@@ -102,10 +67,4 @@ export const LinkBtn = styled(Link)`
   &:hover {
     background-color: #ccc;
   }
-`;
-
-export const BackDiv = styled.div`
-  background: #f2f2f2;
-  padding-top: 15px;
-  padding-left: 15px;
 `;

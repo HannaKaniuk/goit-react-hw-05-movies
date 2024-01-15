@@ -6,7 +6,7 @@ export const CastList = styled.ul`
   max-width: calc(100vw - 35px);
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   grid-gap: 15px;
-
+  background-color: #f2f2f2;
   padding: 20px;
 `;
 export const Name = styled.p`

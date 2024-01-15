@@ -1,48 +1,46 @@
 import { fetchMovieInform } from 'helppers/fetch';
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { FaArrowRotateLeft } from 'react-icons/fa6';
-import { Outlet, useLocation, useParams, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
 import {
   MovieContainer,
-  List,
-  AdditionalWrp,
-  LinkInfo,
-  InfoWrp,
   ImgWrp,
+  InfoWrp,
   Img,
   ListGenres,
-  LineDiv,
   LinkBtn,
   BackDiv,
 } from './MoviesDetails.styled';
 import { Loader } from 'components/Loader/Loader';
+import { AdditionalInfo } from 'components/Aditional/Aditional';
 
 const MoviesDetails = () => {
   const [movieInfo, setMovieInfo] = useState(null);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const { movieId } = useParams();
-  const navigate = useNavigate();
+
+  const goBack = useRef(location.state?.from ?? '/');
 
   useEffect(() => {
-    const fetchMovieDetails = async () => {
+    const fetchMovieDetails = () => {
       setLoading(true);
-      try {
-        const movieDetails = await fetchMovieInform(movieId);
-        setMovieInfo(movieDetails);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
+      fetchMovieInform(movieId)
+        .then(movieDetails => {
+          setMovieInfo(movieDetails);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     };
     fetchMovieDetails();
   }, [movieId]);
-
   if (!movieInfo) {
     return null;
   }
-
   const {
     title,
     release_date,
@@ -51,8 +49,7 @@ const MoviesDetails = () => {
     genres,
     poster_path,
     original_title,
-  } = movieInfo;
-
+  } = movieInfo || {};
   const releaseDate = release_date.slice(0, 4);
   const userScore = Math.round(vote_average * 10);
   const defaultMovieImg =
@@ -61,7 +58,7 @@ const MoviesDetails = () => {
   return (
     <div>
       <BackDiv>
-        <LinkBtn onClick={() => navigate(-1)}>
+        <LinkBtn to={goBack.current}>
           Go back
           <FaArrowRotateLeft />
         </LinkBtn>
@@ -83,7 +80,7 @@ const MoviesDetails = () => {
             <h2>
               {title}({releaseDate})
             </h2>
-            <p>User score: {userScore}%</p>
+            <p>User score:{userScore}%</p>
             <h3>Overview</h3>
             <p>{overview}</p>
             <h3>Genres</h3>
@@ -95,22 +92,11 @@ const MoviesDetails = () => {
           </InfoWrp>
         </MovieContainer>
       )}
-      <AdditionalWrp>
-        <LineDiv>
-          <h3>Additional information</h3>
-          <List>
-            <li>
-              <LinkInfo to={`${location.pathname}/cast`}>Cast</LinkInfo>
-            </li>
-            <li>
-              <LinkInfo to={`${location.pathname}/reviews`}>Reviews</LinkInfo>
-            </li>
-          </List>
-        </LineDiv>
-        <Suspense fallback={<Loader />}>
-          <Outlet />
-        </Suspense>
-      </AdditionalWrp>
+      <AdditionalInfo />
+
+      <Suspense fallback={<Loader />}>
+        <Outlet />
+      </Suspense>
     </div>
   );
 };

@@ -62,12 +62,11 @@ function Movies() {
       </SearchDiv>
 
       {loading && <Loader />}
-      {!movies.length ? (
+      {movies.length > 0 && <TrendingList movies={movies} />}
+      {movies.length === 0 && searchQuery && (
         <TextInfo>
           There is no movies with this request. Please, try again
         </TextInfo>
-      ) : (
-        <TrendingList movies={movies} />
       )}
     </HomeDiv>
   );
